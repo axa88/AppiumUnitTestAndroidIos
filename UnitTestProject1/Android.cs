@@ -14,20 +14,21 @@ namespace UnitTestProject1
 {
 	public class Android
 	{
-		public void TestMethod(string deviceIpPort, string deviceName = "")
+		private AppiumLocalService _appiumLocalService;
+
+		public AndroidDriver<IWebElement> CreateAndroidDriver(string deviceIpPort, string deviceName = "")
 		{
 			if (string.IsNullOrWhiteSpace(deviceName))
 				deviceName = deviceIpPort;
 
-			var homeButtonId = @"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.FrameLayout[1]";
-			const string roomsButtonId = @"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.FrameLayout[2]";
-			const string roomsTitle = "com.crestron.phoenix.touchscreen:id/fragmentRoomsTitle";
-
 			// start appium service
 			var builder = new AppiumServiceBuilder();
-			var appiumLocalService = builder.UsingAnyFreePort().Build();
-			appiumLocalService.Start();
-
+			_appiumLocalService = builder.UsingAnyFreePort().Build();
+			_appiumLocalService.Start();
+			_appiumLocalService.OutputDataReceived += (sender, args) =>
+													{
+														Console.WriteLine(args.Data);
+													};
 			// create appium driver capabilities
 			var options = new AppiumOptions { PlatformName = "Android" };
 			options.AddAdditionalCapability("deviceName", deviceName);
@@ -43,28 +44,35 @@ namespace UnitTestProject1
 			options.AddAdditionalCapability("noReset", "true");
 
 			// these are optional, but I find them to be helpful -- see DesiredCapabilities Appium docs to learn more
-			//options.AddAdditionalCapability("autoGrantPermissions", true);
-			//options.AddAdditionalCapability("allowSessionOverride", true);
+			options.AddAdditionalCapability("autoGrantPermissions", true);
+			options.AddAdditionalCapability("allowSessionOverride", true);
 
-
-			// start the driver
-			var driver = new AndroidDriver<IWebElement>(appiumLocalService.ServiceUrl, options);
+			// create the driver
+			var driver = new AndroidDriver<IWebElement>(_appiumLocalService.ServiceUrl, options);
 			driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+			return driver;
+		}
 
-			//var mainBottomBar = driver.FindElementById("com.crestron.phoenix.touchscreen:id/main_bottomNavigationView");
-			//var homeButton = driver.FindElementByXPath(_homeButtonId);
+		public void DestroyAndroidDriver(AndroidDriver<IWebElement> androidDriver)
+		{
+			androidDriver.Quit();
+			_appiumLocalService.Dispose();
+		}
 
-			var wait = new WebDriverWait(driver , TimeSpan.FromSeconds(10));
-			var roomsButton = wait.Until(webDriver => driver.FindElementByXPath(roomsButtonId));
+		public void TestMethod(AndroidDriver<IWebElement> androidDriver)
+		{
+			var homeButtonId = @"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.FrameLayout[1]";
+			const string roomsButtonId = @"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.FrameLayout[2]";
+			const string roomsTitle = "com.crestron.phoenix.touchscreen:id/fragmentRoomsTitle";
+
+			var wait = new WebDriverWait(androidDriver, TimeSpan.FromSeconds(10));
+			var roomsButton = wait.Until(webDriver => androidDriver.FindElementByXPath(roomsButtonId));
 			roomsButton.Click();
 
-			var roomTitle = wait.Until(webDriver => driver.FindElementById(roomsTitle).Text);
+			var roomTitle = wait.Until(webDriver => androidDriver.FindElementById(roomsTitle).Text);
 
 			//var roomTitle = driver.FindElementById("com.crestron.phoenix.touchscreen:id/fragmentRoomsTitle").Text;
 			Assert.AreEqual(roomTitle, "Rooms");
-
-			driver.Quit();
-			appiumLocalService.Dispose();
 		}
 	}
 }
