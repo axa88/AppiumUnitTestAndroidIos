@@ -69,7 +69,7 @@
   <ItemGroup>
     <Compile Include="Ios.cs" />
     <Compile Include="Android.cs" />
-    <Compile Include="AppiumCreationTest.cs" />
+    <Compile Include="AndroidDriverCreationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

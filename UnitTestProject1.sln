@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{76A37DC6-1613-4EAA-8C4B-C5BE3CF01684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppiumApp", "..\ConsoleAppiumApp\ConsoleAppiumApp\ConsoleAppiumApp.csproj", "{241DB4D0-FAF5-4D81-A2BC-3F1F349B1AC4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{76A37DC6-1613-4EAA-8C4B-C5BE3CF01684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76A37DC6-1613-4EAA-8C4B-C5BE3CF01684}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76A37DC6-1613-4EAA-8C4B-C5BE3CF01684}.Release|Any CPU.Build.0 = Release|Any CPU
-		{241DB4D0-FAF5-4D81-A2BC-3F1F349B1AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{241DB4D0-FAF5-4D81-A2BC-3F1F349B1AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{241DB4D0-FAF5-4D81-A2BC-3F1F349B1AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{241DB4D0-FAF5-4D81-A2BC-3F1F349B1AC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

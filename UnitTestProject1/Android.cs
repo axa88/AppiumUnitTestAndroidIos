@@ -18,17 +18,21 @@ namespace UnitTestProject1
 
 		public AndroidDriver<IWebElement> CreateDriver(string deviceIpPort, string deviceName = "")
 		{
+			Environment.SetEnvironmentVariable(AppiumServiceConstants.NodeBinaryPath, @"C:\Program Files\nodejs\node.exe");
+
 			if (string.IsNullOrWhiteSpace(deviceName))
 				deviceName = deviceIpPort;
 
 			// start appium service
 			var builder = new AppiumServiceBuilder();
-			_appiumLocalService = builder.UsingAnyFreePort().Build();
+			//_appiumLocalService = builder.UsingAnyFreePort().Build();
+			_appiumLocalService = builder.UsingPort(4724).Build();
 			_appiumLocalService.Start();
 			_appiumLocalService.OutputDataReceived += (sender, args) =>
 													{
 														Console.WriteLine(args.Data);
 													};
+
 			// create appium driver capabilities
 			var options = new AppiumOptions { PlatformName = "Android" };
 			options.AddAdditionalCapability("deviceName", deviceName);
