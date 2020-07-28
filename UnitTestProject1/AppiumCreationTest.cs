@@ -26,9 +26,9 @@ namespace UnitTestProject1
 		{
 			for (var i = 0; i < _iterations; i++)
 			{
-				var androidDriver = _android.CreateAndroidDriver(_deviceIpPort);
+				var androidDriver = _android.CreateDriver(_deviceIpPort);
 				_android.TestMethod(androidDriver);
-				_android.DestroyAndroidDriver(androidDriver);
+				_android.DestroyDriver(androidDriver);
 			}
 		}
 	}

@@ -16,7 +16,7 @@ namespace UnitTestProject1
 	{
 		private AppiumLocalService _appiumLocalService;
 
-		public AndroidDriver<IWebElement> CreateAndroidDriver(string deviceIpPort, string deviceName = "")
+		public AndroidDriver<IWebElement> CreateDriver(string deviceIpPort, string deviceName = "")
 		{
 			if (string.IsNullOrWhiteSpace(deviceName))
 				deviceName = deviceIpPort;
@@ -53,23 +53,23 @@ namespace UnitTestProject1
 			return driver;
 		}
 
-		public void DestroyAndroidDriver(AndroidDriver<IWebElement> androidDriver)
+		public void DestroyDriver(AndroidDriver<IWebElement> driver)
 		{
-			androidDriver.Quit();
+			driver.Quit();
 			_appiumLocalService.Dispose();
 		}
 
-		public void TestMethod(AndroidDriver<IWebElement> androidDriver)
+		public void TestMethod(AndroidDriver<IWebElement> driver)
 		{
 			var homeButtonId = @"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.FrameLayout[1]";
 			const string roomsButtonId = @"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.FrameLayout[2]";
 			const string roomsTitle = "com.crestron.phoenix.touchscreen:id/fragmentRoomsTitle";
 
-			var wait = new WebDriverWait(androidDriver, TimeSpan.FromSeconds(10));
-			var roomsButton = wait.Until(webDriver => androidDriver.FindElementByXPath(roomsButtonId));
+			var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+			var roomsButton = wait.Until(webDriver => driver.FindElementByXPath(roomsButtonId));
 			roomsButton.Click();
 
-			var roomTitle = wait.Until(webDriver => androidDriver.FindElementById(roomsTitle).Text);
+			var roomTitle = wait.Until(webDriver => driver.FindElementById(roomsTitle).Text);
 
 			//var roomTitle = driver.FindElementById("com.crestron.phoenix.touchscreen:id/fragmentRoomsTitle").Text;
 			Assert.AreEqual(roomTitle, "Rooms");
